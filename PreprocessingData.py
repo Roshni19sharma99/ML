@@ -5,7 +5,14 @@
 4. drop unwanted columns
 5. fill the NA or Null values
 6. split the data into training and test sets
-7. Observe data distribution and do the sampling  '''
+7. Observe data distribution and do the sampling  
+Feature scaling must be done after the splitting the training and test sets
+standardization vs normalization
+Standardization = (x-mean(x))/standard devaiation(x)   --> data is 
+Normalization = x-min(x)/(max(x)-min(x))
+normalization of data is prefered when the data is distributed normally
+Standardization is suitable for all types of data distribution
+'''
 
 #Importing all required libraries
 import numpy as np
@@ -20,7 +27,7 @@ class DataLoader():
     def __init__(self, **kwargs):
         self.data = None
     
-    def load_dataset(self, path="mobile phone price prediction.csv"):
+    def load_dataset(self, path="Data/mobile phone price prediction.csv"):
         self.data = pd.read_csv(path)
 
     def Null_value_handling(self):
