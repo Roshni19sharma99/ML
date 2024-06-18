@@ -33,12 +33,15 @@ class DataLoader():
 
     def Null_value_handling(self):
         #dropping unwanted columns
-        # self.data.drop(["Name"], axis=1, inplace=True)
+        self.data.drop(["Name"], axis=1, inplace=True)
         self.data.drop(["Unnamed: 0"], axis=1, inplace=True)
-        # self.data.drop(["Android_version"], axis=1, inplace=True)
+        self.data.drop(["Android_version"], axis=1, inplace=True)
+        self.data.drop(["Processor_name"], axis=1, inplace=True)
+        self.data['Price'] = self.data['Price'].str.replace(',','')
+        self.data['Price'] = self.data['Price'].astype(int)
 
         #handling null values for categorical data
-        # self.data.dropna(axis=0,inplace=True)
+        self.data.dropna(axis=0,inplace=True)
 
         #handling null value for numberical data
         '''
