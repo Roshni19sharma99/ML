@@ -20,6 +20,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import RandomOverSampler
 
 
@@ -27,17 +28,17 @@ class DataLoader():
     def __init__(self, **kwargs):
         self.data = None
     
-    def load_dataset(self, path="Data/mobile phone price prediction.csv"):
+    def load_dataset(self, path):
         self.data = pd.read_csv(path)
 
     def Null_value_handling(self):
         #dropping unwanted columns
-        self.data.drop(["Name"], axis=1, inplace=True)
+        # self.data.drop(["Name"], axis=1, inplace=True)
         self.data.drop(["Unnamed: 0"], axis=1, inplace=True)
-        self.data.drop(["Android_version"], axis=1, inplace=True)
+        # self.data.drop(["Android_version"], axis=1, inplace=True)
 
         #handling null values for categorical data
-        self.data.dropna(axis=0,inplace=True)
+        # self.data.dropna(axis=0,inplace=True)
 
         #handling null value for numberical data
         '''
@@ -66,7 +67,6 @@ class DataLoader():
         encoded = pd.get_dummies(self.data[categorical_col],
                                  dtype=float)
         
-        
 
         #Impute missing values of Android_version,Inbuilt_memory,fast_charging,Screen_resolution
         # self.data.Android_version = self.data.Android_version.fillna(0)
@@ -82,7 +82,7 @@ class DataLoader():
         y = self.data.iloc[:,-1]
         return train_test_split(x,y,test_size=0.20, random_state=2021)
 
-     #Smapling the dataset
+    #Sampling the dataset for unbalanced dataset
     def oversample(self, X_train, y_train):
         oversample = RandomOverSampler(sampling_strategy='minority')
         #convert Numpy and oversample
@@ -93,3 +93,11 @@ class DataLoader():
         x_over = pd.DataFrame(x_np, columns=X_train.columns)
         y_over = pd.Series(y_np, name=y_train.name)
         return x_over, y_over
+    
+    #Scaling the dataset with standardization,Scaling is fitting data into a particluar range
+    def feature_scaling(self, X_train,X_test):
+        sc = StandardScaler()
+        X_train[:] = sc.fit_transform(X_train[:])
+        X_test[:] = sc.transform(X_test[:])
+        return X_train,X_test
+
